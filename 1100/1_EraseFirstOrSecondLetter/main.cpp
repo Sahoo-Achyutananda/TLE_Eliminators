@@ -1,8 +1,8 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-unordered_map<string,int> mp;
-int solve(int idx, int n, string str){
+
+int solve(int idx, int n, string str, unordered_map<string,int> &mp){
     if(n == 1) return 1;
     // remove one char
     int count = 1;
@@ -10,14 +10,14 @@ int solve(int idx, int n, string str){
     if(mp.count(one) == false){
         mp[one]++;
         // cout << one << endl;
-        count = count + solve(0,n-1,one);
+        count = count + solve(0,n-1,one,mp);
     }
     // remove second char
     string second = str[idx] + str.substr(idx + 2, n - idx - 2);
     if(mp.count(second) == false){
         mp[second]++;
         // cout << second << endl;
-        count = count + solve(0,n-1,second);
+        count = count + solve(0,n-1,second,mp);
     }
 
     return count;
@@ -33,7 +33,9 @@ int main(){
         string str;
         cin >> str;
 
-        result.push_back(solve(0,n,str));
+        unordered_map<string,int> mp;
+        mp[str]++;
+        result.push_back(solve(0,n,str,mp));
     }
 
     for(auto r : result){
