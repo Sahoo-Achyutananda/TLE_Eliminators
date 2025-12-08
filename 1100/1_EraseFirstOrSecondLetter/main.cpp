@@ -2,21 +2,38 @@
 using namespace std;
 
 
-int solve(int idx, int n, string str, unordered_map<string,int> &mp){
-    if(mp.count(str)) return 0;
+int solve(int n, string str){
+    unordered_set<string> visited;
+    queue<string> q;
 
-    mp[str] = 1;
-    int count = 1;
+    visited.insert(str);
+    q.push(str);
 
-    if(n <= 1) return count;
+    while(!q.empty()){
+        string cur = q.front();
+        q.pop();
 
-    string one = str.substr(1);
-    count += solve(0, n-1, one, mp);
+        int len = cur.size();
+        if(len <= 1) continue;
 
-    string second = str[0] + str.substr(2);
-    count += solve(0, n-1, second, mp);
+        // remove first character
+        string one = cur.substr(1);
+        if(!visited.count(one)){
+            visited.insert(one);
+            q.push(one);
+        }
 
-    return count;
+        // remove second character
+        if(len >= 2){
+            string second = cur[0] + cur.substr(2);
+            if(!visited.count(second)){
+                visited.insert(second);
+                q.push(second);
+            }
+        }
+    }
+
+    return visited.size();
 }
 
 
@@ -30,8 +47,7 @@ int main(){
         string str;
         cin >> str;
 
-        unordered_map<string,int> mp;
-        result.push_back(solve(0,n,str,mp));
+        result.push_back(solve(n,str));
     }
 
     for(auto r : result){
