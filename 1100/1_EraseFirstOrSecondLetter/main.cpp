@@ -3,25 +3,22 @@ using namespace std;
 
 
 int solve(int idx, int n, string str, unordered_map<string,int> &mp){
-    if(n == 1) return 1;
-    // remove one char
+    if(mp.count(str)) return 0;
+
+    mp[str] = 1;
     int count = 1;
-    string one = str.substr(idx + 1, n - idx);
-    if(mp.count(one) == false){
-        mp[one]++;
-        // cout << one << endl;
-        count = count + solve(0,n-1,one,mp);
-    }
-    // remove second char
-    string second = str[idx] + str.substr(idx + 2, n - idx - 2);
-    if(mp.count(second) == false){
-        mp[second]++;
-        // cout << second << endl;
-        count = count + solve(0,n-1,second,mp);
-    }
+
+    if(n <= 1) return count;
+
+    string one = str.substr(1);
+    count += solve(0, n-1, one, mp);
+
+    string second = str[0] + str.substr(2);
+    count += solve(0, n-1, second, mp);
 
     return count;
 }
+
 
 int main(){
     int t;
@@ -34,7 +31,6 @@ int main(){
         cin >> str;
 
         unordered_map<string,int> mp;
-        mp[str]++;
         result.push_back(solve(0,n,str,mp));
     }
 
