@@ -2,38 +2,17 @@
 using namespace std;
 
 
-int solve(int n, string str){
-    unordered_set<string> visited;
-    queue<string> q;
+int solve(int n, string s){
+    unordered_set<char> seen;
+    long long ans = 0;
 
-    visited.insert(str);
-    q.push(str);
-
-    while(!q.empty()){
-        string cur = q.front();
-        q.pop();
-
-        int len = cur.size();
-        if(len <= 1) continue;
-
-        // remove first character
-        string one = cur.substr(1);
-        if(!visited.count(one)){
-            visited.insert(one);
-            q.push(one);
-        }
-
-        // remove second character
-        if(len >= 2){
-            string second = cur[0] + cur.substr(2);
-            if(!visited.count(second)){
-                visited.insert(second);
-                q.push(second);
-            }
+    for(int i = 0; i < n; i++){
+        if(!seen.count(s[i])){
+            seen.insert(s[i]);
+            ans += (n - i);
         }
     }
-
-    return visited.size();
+    return ans;
 }
 
 
