@@ -2,21 +2,17 @@
 using namespace std;
 
 
-int solve(int idx, int n, string str, unordered_map<string,int> &mp){
-    if(mp.count(str)) return 0;
+int solve(int n, string s){
+    unordered_set<char> seen;
+    long long ans = 0;
 
-    mp[str] = 1;
-    int count = 1;
-
-    if(n <= 1) return count;
-
-    string one = str.substr(1);
-    count += solve(0, n-1, one, mp);
-
-    string second = str[0] + str.substr(2);
-    count += solve(0, n-1, second, mp);
-
-    return count;
+    for(int i = 0; i < n; i++){
+        if(!seen.count(s[i])){
+            seen.insert(s[i]);
+            ans += (n - i);
+        }
+    }
+    return ans;
 }
 
 
@@ -30,8 +26,7 @@ int main(){
         string str;
         cin >> str;
 
-        unordered_map<string,int> mp;
-        result.push_back(solve(0,n,str,mp));
+        result.push_back(solve(n,str));
     }
 
     for(auto r : result){
